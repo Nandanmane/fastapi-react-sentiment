@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import torch
 import logging
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -33,6 +34,7 @@ class SentimentResult(BaseModel):
     text: str
     sentiment: str
     confidence: float
+    inference_time: float
 
 # Global variables for model and tokenizer
 tokenizer = None
@@ -77,7 +79,12 @@ async def root():
         },
         "example": {
             "input": {"text": "I love this movie! It's absolutely fantastic."},
-            "output": {"text": "I love this movie! It's absolutely fantastic.", "sentiment": "POSITIVE", "confidence": 0.999}
+            "output": {
+                "text": "I love this movie! It's absolutely fantastic.", 
+                "sentiment": "POSITIVE", 
+                "confidence": 0.999,
+                "inference_time": 0.045
+            }
         }
     }
 
@@ -111,10 +118,15 @@ async def analyze_sentiment(input_data: TextInput):
         # Move inputs to the same device as model
         inputs = {key: value.to(device) for key, value in inputs.items()}
         
-        # Make prediction
+        # Make prediction with timing
+        start_time = time.time()
+        
         with torch.no_grad():
             outputs = model(**inputs)
             predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+        
+        inference_time = time.time() - start_time
+        logger.info(f"Inference completed in {inference_time:.3f} seconds on {device}")
         
         # Get results
         labels = ['NEGATIVE', 'POSITIVE']
@@ -125,7 +137,8 @@ async def analyze_sentiment(input_data: TextInput):
         return SentimentResult(
             text=input_data.text,
             sentiment=predicted_label,
-            confidence=round(confidence, 3)
+            confidence=round(confidence, 3),
+            inference_time=round(inference_time, 3)
         )
         
     except Exception as e:
