@@ -4,44 +4,21 @@ from fastapi.middleware.cors import CORSMiddleware
 from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
 import torch
 import logging
+from contextlib import asynccontextmanager
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Initialize FastAPI app
-app = FastAPI(
-    title="DistilBERT Sentiment Analysis API",
-    description="A simple API for sentiment analysis using DistilBERT",
-    version="1.0.0"
-)
-
-# Configure CORS middleware to allow requests from any origin (useful for development; restrict in production)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Request/Response models
-class TextInput(BaseModel):
-    text: str
-
-class SentimentResult(BaseModel):
-    text: str
-    sentiment: str
-    confidence: float
 
 # Global variables for model and tokenizer
 tokenizer = None
 model = None
 device = None
 
-@app.on_event("startup")
-async def load_model():
-    """Load the model and tokenizer on startup"""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Manage the lifespan of the FastAPI app - startup and shutdown"""
+    # Startup
     global tokenizer, model, device
 
     try:
@@ -65,6 +42,37 @@ async def load_model():
     except Exception as e:
         logger.error(f"Error loading model: {str(e)}")
         raise e
+    
+    yield  # App runs here
+    
+    # Shutdown (cleanup if needed)
+    logger.info("Shutting down...")
+
+# Initialize FastAPI app with lifespan
+app = FastAPI(
+    title="DistilBERT Sentiment Analysis API",
+    description="A simple API for sentiment analysis using DistilBERT",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Configure CORS middleware to allow requests from any origin (useful for development; restrict in production)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Request/Response models
+class TextInput(BaseModel):
+    text: str
+
+class SentimentResult(BaseModel):
+    text: str
+    sentiment: str
+    confidence: float
 
 @app.get("/")
 async def root():
