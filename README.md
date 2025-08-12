@@ -39,8 +39,9 @@ A professional full-stack sentiment analysis application powered by DistilBERT t
 ├── .gitignore
 ├── backend/
 │   ├── webapp/
-│   │   ├── main-distbert.py         # FastAPI server with CORS
-│   │   └── test-distbert.py         # Comprehensive API test client
+│   │   ├── sentiment-api-basic.py   # Basic sentiment analysis FastAPI server
+│   │   ├── sentiment-api-metrics.py # Sentiment API with inference time metrics
+│   │   └── sentiment-api-client.py  # Comprehensive test suite and API client
 │   ├── requirements.txt             # Python dependencies
 │   └── venv/                        # Virtual environment (not in Git)
 └── frontend/
